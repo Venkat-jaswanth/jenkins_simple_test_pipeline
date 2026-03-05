@@ -19,7 +19,7 @@ pipeline {
             }
         }
 
-        // stage('Push to Docker Hub') {
+        // stage('Push to Docker Hub - using pass username') {
         //     steps {
         //         // IMPORTANT: You need to create a credential in Jenkins named 'dockerhub-credentials' (Type: Username with password)
         //         // containing your Docker Hub username and password/access token.
@@ -30,11 +30,15 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Push to Docker Hub - directly') {
+        stage('Push to Docker Hub - using token') {
             steps {
+                // You must replace 'YOUR_DOCKERHUB_USERNAME' with your actual username below.
+                // It injects exactly the secret token as DOCKER_TOKEN
+                withCredentials([string(credentialsId: 'dockerhub-token', variable: 'DOCKER_TOKEN')]) {
+                    sh 'echo "$DOCKER_TOKEN" | docker login -u venkatjaswanth --password-stdin'
                     sh 'docker tag minimal-frontend venkatjaswanth/minimal-frontend:latest'
                     sh 'docker push venkatjaswanth/minimal-frontend:latest'
-                
+                }
             }
         }
     }
