@@ -37,5 +37,26 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to Cloud (EC2)') {
+            steps {
+                // Use the SSH key stored in Jenkins credentials
+                sshagent(['cloud-ssh-key']) {
+                    // Replace 'ubuntu@<YOUR_CLOUD_IP_ADDRESS>' with your actual server IP and username
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@13.60.163.82 "
+                        # 1. Pull the latest image from Docker Hub
+                        docker pull venkatjaswanth/2023bcd0021-jenkinassignment:latest
+                        
+                        # 2. Stop and remove the old running container
+                        docker stop my-cloud-app || true
+                        docker rm my-cloud-app || true
+                        
+                        # 3. Run the new container on the cloud server
+                        docker run -d -p 80:80 --name my-cloud-app venkatjaswanth/2023bcd0021-jenkinassignment:latest
+                    "
+                    '''
+                }
+            }
+        }
     }
 }
