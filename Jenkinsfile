@@ -12,9 +12,9 @@ pipeline {
         stage('Run Container') {
             steps {
                 sh '''
-                docker stop 2023BCD0021-jenkinassignment || true
-                docker rm 2023BCD0021-jenkinassignment || true
-                docker run -d -p 3000:80 --name 2023BCD0021-jenkinassignment 2023BCD0021-jenkinassignment
+                docker stop 2023bcd0021-jenkinassignment || true
+                docker rm 2023bcd0021-jenkinassignment || true
+                docker run -d -p 3000:80 --name 2023bcd0021-jenkinassignment 2023bcd0021-jenkinassignment
                 '''
             }
         }
@@ -32,8 +32,8 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'dockerhub-token', variable: 'DOCKER_TOKEN')]) {
                     sh 'echo "$DOCKER_TOKEN" | docker login -u venkatjaswanth --password-stdin'
-                    sh 'docker tag 2023BCD0021-jenkinassignment venkatjaswanth/2023BCD0021-jenkinassignment:latest'
-                    sh 'docker push venkatjaswanth/2023BCD0021-jenkinassignment:latest'
+                    sh 'docker tag 2023bcd0021-jenkinassignment venkatjaswanth/2023bcd0021-jenkinassignment:latest'
+                    sh 'docker push venkatjaswanth/2023bcd0021-jenkinassignment:latest'
                 }
             }
         }
