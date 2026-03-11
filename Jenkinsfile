@@ -5,7 +5,7 @@ pipeline {
 
         stage('Build Image') {
             steps {
-                sh 'docker build -t 2023BCD0021-jenkinassignment .'
+                sh 'docker build -t 2023bcd0021-jenkinassignment .'
             }
         }
 
